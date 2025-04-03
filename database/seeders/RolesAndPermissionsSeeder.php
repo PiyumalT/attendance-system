@@ -38,7 +38,8 @@ class RolesAndPermissionsSeeder extends Seeder
         $addNewUser = Permission::firstOrCreate(['name' => 'add_new_user']);
 
         // Assign permissions to roles
-        $superAdmin->givePermissionTo([$viewAttendance, $markAttendance, $manageUsers, $manageRoles]);
+        $superAdmin->givePermissionTo(Permission::all());
+        // $superAdmin->givePermissionTo([$viewAttendance, $markAttendance, $manageUsers, $manageRoles]);
         $hrm->givePermissionTo([$viewAttendance, $markAttendance, $addNewUser]);  // HRM can add users
         $supervisor->givePermissionTo([$viewAttendance]);
         $regularUser->givePermissionTo([$markAttendance]);

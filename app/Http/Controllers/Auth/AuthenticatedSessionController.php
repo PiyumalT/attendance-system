@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -25,10 +24,18 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        // If the user has ONLY the "Regular User" role, redirect to attendance form
+        if ($user->hasRole('Regular User') && $user->roles->count() <= 1) {
+            return redirect()->route('attendance.mark');
+        }
+
+        // Otherwise, redirect to the dashboard
+        return redirect()->route('dashboard');
+        
     }
 
     /**
@@ -39,7 +46,6 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

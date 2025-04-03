@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         // Call the seeders to populate the database
         $this->call([
-            RolesAndPermissionsSeeder::class, // Correct class call
-            SuperAdminSeeder::class, // Correct class call
+            RolesAndPermissionsSeeder::class, 
+            SuperAdminSeeder::class, 
         ]);
     }
 }

@@ -28,14 +28,12 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // If the user has ONLY the "Regular User" role, redirect to attendance form
-        if ($user->hasRole('Regular User') && $user->roles->count() <= 1) {
-            return redirect()->route('attendance.mark');
+        if ($user->hasRole('regular-user') && $user->roles->count() === 1) {
+            return redirect()->route('attendance.create');
         }
 
         // Otherwise, redirect to the dashboard
         return redirect()->route('dashboard');
-        
     }
 
     /**

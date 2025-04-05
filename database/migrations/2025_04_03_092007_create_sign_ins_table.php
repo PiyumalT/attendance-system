@@ -10,7 +10,7 @@ class CreateSignInsTable extends Migration
         Schema::create('sign_ins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['on_time', 'late', 'absent'])->default('on_time');
+            $table->enum('status', ['on_time', 'late', 'absent', 'before'])->default('on_time');
             $table->timestamp('timestamp');
             $table->timestamps();
         });

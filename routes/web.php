@@ -32,9 +32,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/attendance/create', [AttendanceController::class, 'showAttendanceForm'])
         ->name('attendance.create');
 
-    Route::post('/attendance/store', [AttendanceController::class, 'store'])
-        ->name('attendance.store');
-        // ->middleware('permission:mark_attendance');
+    Route::post('/attendance/sign-in', [AttendanceController::class, 'storeSignIn'])
+        ->name('attendance.sign-in');
+
+    Route::post('/attendance/sign-out', [AttendanceController::class, 'storeSignOut'])
+        ->name('attendance.sign-out');
+
+    Route::get('/attendance/receipt/{sign_in}/{sign_out?}', [AttendanceController::class, 'showReceipt'])
+        ->name('attendance.receipt');
 
     Route::get('/attendance/history', [AttendanceController::class, 'history'])
         ->name('attendance.history')

@@ -10,7 +10,7 @@ class CreateSignOutsTable extends Migration
         Schema::create('sign_outs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['on_time', 'early', 'absent'])->default('on_time');
+            $table->enum('status', ['on_time', 'early', 'absent' , 'over_time'])->default('on_time');
             $table->timestamp('timestamp');
             $table->foreignId('sign_in_id')->constrained('sign_ins')->onDelete('cascade');
             $table->timestamps();

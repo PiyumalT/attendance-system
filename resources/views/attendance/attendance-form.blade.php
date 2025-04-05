@@ -11,26 +11,19 @@
 
             <div class="mb-4">
                 <p class="text-lg">
-                    You are currently <strong>{{ $statusMessage }}</strong>.
+                    {{ $statusMessage }}
                 </p>
                 @if ($isLate)
-                    <p class="text-red-500">Warning: You are late! Your shift started at {{ $shiftStart }}.</p>
+                    <p class="text-red-500">You are late! Your shift started at {{ $shiftStart }}.</p>
                 @elseif ($isShortLeave)
-                    <p class="text-orange-500">Warning: You may have a short leave based on the shift start time.</p>
+                    <p class="text-orange-500">You may have a short leave based on the shift start time.</p>
                 @endif
             </div>
 
-            <form action="{{ route('attendance.store') }}" method="POST">
+            <form action="{{ route('attendance.' . ($nextAction === 'in' ? 'sign-in' : 'sign-out')) }}" method="POST">
                 @csrf
 
-                <!-- Sign Type Selection -->
-                <div class="mb-4">
-                    <label for="sign_type" class="form-label text-sm font-medium text-gray-700">Sign Type</label>
-                    <select class="form-control w-full p-2 border border-gray-300 rounded-md" id="sign_type" name="sign_type" required>
-                        <option value="in" {{ old('sign_type') == 'in' ? 'selected' : '' }}>Sign In</option>
-                        <option value="out" {{ old('sign_type') == 'out' ? 'selected' : '' }}>Sign Out</option>
-                    </select>
-                </div>
+                <input type="hidden" name="sign_type" value="{{ $nextAction }}">
 
                 <!-- Notes -->
                 <div class="mb-4">
@@ -41,7 +34,7 @@
                 <!-- Submit Button -->
                 <div class="flex justify-center">
                     <button type="submit" class="btn btn-primary px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        Submit
+                        {{ $nextAction === 'in' ? 'Sign In' : 'Sign Out' }}
                     </button>
                 </div>
             </form>

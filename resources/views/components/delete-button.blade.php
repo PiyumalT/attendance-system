@@ -14,7 +14,7 @@
 
 
     <div class="delete-modal fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white p-6 rounded shadow-xl w-96 text-center">
+        <div class="bg-white p-6 rounded shadow-xl w-96 text-center relative">
 
             <!-- Close button with circular background -->
             <button class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-500 hover:text-gray-700" onclick="this.closest('.delete-modal').classList.add('hidden')">

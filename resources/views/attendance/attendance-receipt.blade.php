@@ -10,6 +10,8 @@
             <h3 class="text-2xl font-bold text-center mb-4">Attendance Details</h3>
 
             <div class="mb-4">
+                <p><strong>User:</strong> {{ $user->name }}</p>
+                <p><strong>Email:</strong> {{ $user->email }}</p>
                 <p><strong>Shift Start Time:</strong> {{ $shiftStart ?? 'Not Available' }}</p>
                 
                 <!-- Ensure that timestamp is a Carbon instance before using toIso8601String -->

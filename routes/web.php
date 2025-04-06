@@ -48,6 +48,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/attendance/employees', [AttendanceController::class, 'viewEmployees'])
         ->name('attendance.employees')
         ->middleware('permission:view employee attendance');
+
+    Route::get('/attendance/view', [AttendanceController::class, 'view'])->name('attendance.view');
+
 });
 
 Route::middleware(['auth', 'can:manage_users'])->group(function () {

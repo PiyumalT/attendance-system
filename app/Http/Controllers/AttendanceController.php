@@ -5,6 +5,7 @@ use App\Models\SignIn;
 use App\Models\SignOut;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -153,6 +154,66 @@ class AttendanceController extends Controller
             return redirect()->route('attendance.create')->with('error', 'Invalid sign-in record.');
         }
 
-        return view('attendance.attendance-receipt', compact('signIn', 'signOut'));
+        $user = Auth::user();
+
+        return view('attendance.attendance-receipt', compact('signIn', 'signOut', 'user'));
     }
+
+    public function view(Request $request)
+    {
+        $query = SignIn::with(['user', 'signOut']);
+    
+        // Filter by date range
+        if ($request->from_date) {
+            $query->whereDate('timestamp', '>=', $request->from_date);
+        } else {
+            $query->whereDate('timestamp', now()->toDateString()); // Default: today
+        }
+    
+        if ($request->to_date) {
+            $query->whereDate('timestamp', '<=', $request->to_date);
+        }
+    
+        // Get the authenticated user
+        $user = Auth::user();
+    
+        // Check if the user has the 'view_attendance' permission
+        if (!$user->can('view_attendance')) {
+            // If the user does not have permission, filter only their own data
+            $query->where('user_id', $user->id);
+        }
+    
+        // If the user has the 'view_attendance' permission, check for the search query
+        if ($request->search) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->search}%")
+                ->orWhere('email', 'like', "%{$request->search}%");
+            });
+        }
+    
+        // Get the filtered attendances
+        $attendances = $query->latest()->get();
+
+        $attendances->transform(function ($attendance) {
+            return [
+                'user_name' => $attendance->user->name,
+                'user_email' => $attendance->user->email,
+                'sign_in_time' => $attendance->timestamp,
+                'sign_in_status' => $attendance->status,
+                'sign_out_time' => optional($attendance->signOut)->timestamp,
+                'sign_out_status' => optional($attendance->signOut)->status,
+                'notes' => $attendance->notes . ' ' . optional($attendance->signOut)->notes,
+                'worked_mins' =>($attendance->signOut && $attendance->timestamp)
+                    ? Carbon::parse($attendance->timestamp)->diffInMinutes(Carbon::parse($attendance->signOut->timestamp))
+                    : null,
+
+                'overtime' => ($attendance->signOut && $attendance->signOut->status === 'over_time')
+                    ? Carbon::parse($attendance->signOut->timestamp)->diffInMinutes(Carbon::createFromTimeString('17:00'))
+                    : null,
+            ];
+        });
+
+        return view('attendance.view', compact('attendances'));
+    }
+
 }

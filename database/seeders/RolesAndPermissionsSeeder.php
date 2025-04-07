@@ -17,6 +17,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'manage_users',
             'manage_roles',
             'add_new_user',
+            'view_work_schedule',
+            'manage_work_schedule',
         ];
 
         // Add permissions if they don't already exist

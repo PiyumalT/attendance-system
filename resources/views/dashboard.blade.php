@@ -52,7 +52,7 @@
                 @endcan
 
                 @can('manage_roles')
-                    <a href="{{ route('attendance.create') }}"
+                    <a href="{{ route('roles.index') }}"
                        class="bg-purple-600 hover:bg-purple-700 transition text-white p-6 rounded-lg shadow flex flex-col items-center justify-center">
                         <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" stroke-width="2"
                              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -60,6 +60,18 @@
                                   d="M12 4v16m0 0l4-4m-4 4l-4-4"></path>
                         </svg>
                         <span class="font-semibold">Manage Roles</span>
+                    </a>
+                @endcan
+
+                @can('manage_work_schedule')
+                    <a href="{{ route('work-schedules.index') }}"
+                       class="bg-teal-600 hover:bg-teal-700 transition text-white p-6 rounded-lg shadow flex flex-col items-center justify-center">
+                        <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M12 4v16m0 0l4-4m-4 4l-4-4"></path>
+                        </svg>
+                        <span class="font-semibold">Manage Work Schedule</span>
                     </a>
                 @endcan
 

@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\WorkScheduleController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -61,5 +63,27 @@ Route::middleware(['auth', 'can:manage_users'])->group(function () {
     Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
 });
+
+Route::middleware(['auth', 'can:manage_roles'])->group(function () {
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+});
+
+Route::get('work-schedules', [WorkScheduleController::class, 'index'])
+->name('work-schedules.index')
+->middleware(['auth', 'can:view_work_schedule']);
+
+Route::get('work-schedules/{user}/edit', [WorkScheduleController::class, 'edit'])
+->name('work-schedules.edit')
+->middleware(['auth', 'can:manage_work_schedule']);
+
+Route::put('work-schedules/{user}', [WorkScheduleController::class, 'update'])
+->name('work-schedules.update')
+->middleware(['auth', 'can:manage_work_schedule']);
+
 
 require __DIR__.'/auth.php';

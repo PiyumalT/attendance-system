@@ -122,9 +122,13 @@ class WorkScheduleController extends Controller
         // Validate the request
         $request->validate([
             'work_schedule_id' => 'required|exists:work_schedules,id',
-            'users' => 'required|array',
-            'users.*' => 'exists:users,id',
         ]);
+
+        //if request->users is empty, delete all users from work_schedule_user table where work_schedule_id = $request->work_schedule_id
+        if (empty($request->users)) {
+            WorkSchedule::findOrFail($request->work_schedule_id)->users()->detach();
+            return redirect()->route('work-schedules.assign')->with('success', 'All users removed from the schedule successfully.');
+        }
 
         // Get the work schedule
         $workSchedule = WorkSchedule::findOrFail($request->work_schedule_id);

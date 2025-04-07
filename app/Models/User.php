@@ -49,6 +49,8 @@ class User extends Authenticatable
 
     public function workSchedules()
     {
-        return $this->hasMany(WorkSchedule::class);
+        return $this->belongsToMany(WorkSchedule::class, 'user_work_schedule');
     }
+
+
 }

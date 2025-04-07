@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WorkScheduleController;
 
 
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -73,17 +74,25 @@ Route::middleware(['auth', 'can:manage_roles'])->group(function () {
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
 });
 
-Route::get('work-schedules', [WorkScheduleController::class, 'index'])
-->name('work-schedules.index')
-->middleware(['auth', 'can:view_work_schedule']);
 
-Route::get('work-schedules/{user}/edit', [WorkScheduleController::class, 'edit'])
-->name('work-schedules.edit')
-->middleware(['auth', 'can:manage_work_schedule']);
+// Group routes that require authentication
+Route::middleware(['auth'])->group(function () {
+    // Routes for viewing schedules for anybody
+    Route::get('/work-schedules', [WorkScheduleController::class, 'index'])->name('work-schedules.index')->middleware('can:view_work_schedule');
 
-Route::put('work-schedules/{user}', [WorkScheduleController::class, 'update'])
-->name('work-schedules.update')
-->middleware(['auth', 'can:manage_work_schedule']);
+    // Routes for managing work schedules (edit/delete)
+    Route::get('/work-schedules/create', [WorkScheduleController::class, 'create'])->name('work-schedules.create')->middleware('can:manage_work_schedule');
+    Route::post('/work-schedules', [WorkScheduleController::class, 'store'])->name('work-schedules.store')->middleware('can:manage_work_schedule');
+    Route::get('/work-schedules/{work_schedule}/edit', [WorkScheduleController::class, 'edit'])->name('work-schedules.edit')->middleware('can:manage_work_schedule');
+    Route::put('/work-schedules/{work_schedule}', [WorkScheduleController::class, 'update'])->name('work-schedules.update')->middleware('can:manage_work_schedule');
+    Route::delete('/work-schedules/{work_schedule}', [WorkScheduleController::class, 'destroy'])->name('work-schedules.destroy')->middleware('can:manage_work_schedule');
+    
+    // Assign schedule to users
+    Route::get('/work-schedules/assign', [WorkScheduleController::class, 'assign'])->name('work-schedules.assign');
+    Route::post('/work-schedules/store-assignment', [WorkScheduleController::class, 'storeAssignment'])->name('work-schedules.store-assignment');
+    
+});
+
 
 
 require __DIR__.'/auth.php';

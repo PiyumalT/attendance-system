@@ -5,40 +5,70 @@
         </h2>
     </x-slot>
 
-    <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-6 max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white shadow-md rounded-lg p-6">
             <form method="POST" action="{{ route('work-schedules.update', $schedule->id) }}">
                 @csrf
                 @method('PUT')
 
-                <!-- Work Schedule Name -->
-                <div class="mb-4">
-                    <label for="name" class="block mb-1 font-medium">Schedule Name</label>
-                    <input type="text" name="name" id="name" value="{{ old('name', $schedule->name) }}" required class="w-full border rounded p-2">
+                {{-- Schedule Name --}}
+                <div class="mb-6">
+                    <label for="name" class="block font-medium mb-1">Schedule Name</label>
+                    <input type="text" id="name" name="name"
+                           value="{{ old('name', $schedule->name) }}"
+                           class="w-full border rounded p-2 @error('name') border-red-500 @enderror" required>
+                    @error('name')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
-                <!-- Work Schedule Days -->
-                <div class="mb-4">
-                    <h3 class="text-lg font-semibold mb-2">Set Work Schedule for Each Day</h3>
-                    <div class="grid grid-cols-7 gap-4">
-                        @foreach (['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as $index => $day)
-                            <div class="border p-4 rounded-lg">
-                                <label class="block text-sm font-medium">{{ $day }}</label>
+                {{-- Work Days Form --}}
+                @php
+                    $dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                @endphp
 
-                                <input type="time" name="days[{{ $index }}][start_time]" value="{{ old('days.' . $index . '.start_time', $schedule->days->where('day_of_week', $index)->first()->start_time ?? '') }}" class="w-full border rounded p-2 mt-2">
+                @foreach ($dayNames as $day)
+                    @php
+                        $start = old("days.$day.start_time", isset($days[$day]['start_time']) ? \Carbon\Carbon::createFromFormat('H:i:s', $days[$day]['start_time'])->format('H:i') : '');
+                        $end = old("days.$day.end_time", isset($days[$day]['end_time']) ? \Carbon\Carbon::createFromFormat('H:i:s', $days[$day]['end_time'])->format('H:i') : '');
+                    @endphp
 
-                                <input type="time" name="days[{{ $index }}][end_time]" value="{{ old('days.' . $index . '.end_time', $schedule->days->where('day_of_week', $index)->first()->end_time ?? '') }}" class="w-full border rounded p-2 mt-2">
+
+                    <div class="mb-5 border-b pb-4">
+                        <label class="block font-semibold mb-2 text-lg">{{ $day }}</label>
+
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            {{-- Start Time --}}
+                            <div class="w-full">
+                                <label class="block text-sm mb-1">Start Time</label>
+                                <input type="time" name="days[{{ $day }}][start_time]"
+                                       value="{{ $start }}"
+                                       class="w-full border rounded p-2 @error("days.$day.start_time") border-red-500 @enderror">
+                                @error("days.$day.start_time")
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
-                        @endforeach
-                    </div>
-                </div>
 
-                <!-- Submit Button -->
-                <div class="text-right">
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                            {{-- End Time --}}
+                            <div class="w-full">
+                                <label class="block text-sm mb-1">End Time</label>
+                                <input type="time" name="days[{{ $day }}][end_time]"
+                                       value="{{ $end }}"
+                                       class="w-full border rounded p-2 @error("days.$day.end_time") border-red-500 @enderror">
+                                @error("days.$day.end_time")
+                                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
+                {{-- Submit --}}
+                <div class="text-right mt-6">
+                    <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">
                         Update Schedule
                     </button>
-                    <a href="{{ route('work-schedules.index') }}" class="bg-gray-300 text-black px-4 py-2 rounded ml-4 hover:bg-gray-400">
+                    <a href="{{ route('work-schedules.index') }}" class="ml-4 text-gray-600 hover:underline">
                         Cancel
                     </a>
                 </div>

@@ -12,46 +12,66 @@ class AttendanceController extends Controller
     public function showAttendanceForm()
     {
         $user = Auth::user();
+        $now = now(); // now in app timezone (should be UTC internally)
 
-        // Assume shift starts at 9:00 AM
-        $shiftStart = '09:00';
-        $shiftEnd = '17:00'; // Assume shift ends at 5:00 PM
-        $now = now();
+        // Get user's first assigned work schedule
+        $workSchedule = $user->workSchedules()->with('days')->first();
 
-        // Get the latest sign-in record
-        $latestSignIn = SignIn::where('user_id', $user->id)
-            ->latest()
-            ->first();
+        if (!$workSchedule) {
+            return view('attendance.attendance-form', [
+                'nextAction' => null,
+                'statusMessage' => 'You have no work schedule assigned.',
+                'isLate' => false,
+                'isShortLeave' => false,
+                'shiftStart' => null,
+                'shiftEnd' => null,
+            ]);
+        }
+        $timezone = config('app.timezone', 'Asia/Colombo'); // fallback just in case
+        $now = \Carbon\Carbon::now($timezone);
 
-        // Check if the user has signed out after the latest sign-in
+        $todayDayOfWeek = $now->format('l');
+
+        $workScheduleDay = $workSchedule->days->firstWhere('day', $todayDayOfWeek);
+
+
+
+        if (!$workScheduleDay) {
+            return view('attendance.attendance-form', [
+                'nextAction' => null,
+                'statusMessage' => 'You have no work schedule today.',
+                'isLate' => false,
+                'isShortLeave' => false,
+                'shiftStart' => null,
+                'shiftEnd' => null,
+            ]);
+        }
+
+
+        $shiftStart = Carbon::createFromTimeString($workScheduleDay->start_time); // in UTC
+        $shiftEnd = Carbon::createFromTimeString($workScheduleDay->end_time);
+
+        // Determine next action
+        $latestSignIn = SignIn::where('user_id', $user->id)->latest()->first();
         $hasSignedOut = $latestSignIn
             ? SignOut::where('sign_in_id', $latestSignIn->id)->exists()
             : true;
 
-        // Determine which form to show (sign-in or sign-out)
         $nextAction = (!$latestSignIn || $hasSignedOut) ? 'in' : 'out';
+        $statusMessage = $nextAction === 'in' ? 'You can sign in.' : 'Please sign out.';
 
-        // Attendance status message
-        $statusMessage = match ($nextAction) {
-            'in' => 'You can sign in.',
-            'out' => 'You are currently signed in. Please sign out.',
-        };
+        // Late or short leave checks
+        $isLate = $nextAction === 'in' && $now->gt($shiftStart);
+        $isShortLeave = $nextAction === 'out' && $now->lt($shiftEnd);
 
-        // Late logic
-        $isLate = false;
-        $isShortLeave = false;
-        if ($nextAction === 'in' && $now->format('H:i') > $shiftStart) {
-            $isLate = true;
-            $statusMessage = 'You are late!';
-        }
-        // Check if the user is on short leave
-        elseif ($nextAction === 'out' && $shiftEnd > $now->format('H:i')) {
-            $isShortLeave = true;
-            $statusMessage = 'You are on short leave.';
+        if ($isLate) {
+            $statusMessage = 'You are late! Shift started at ' . $shiftStart->format('H:i');
+        } elseif ($isShortLeave) {
+            $statusMessage = 'You are on short leave. Shift ends at ' . $shiftEnd->format('H:i');
         }
 
         return view('attendance.attendance-form', compact(
-            'nextAction', 'statusMessage', 'isLate', 'shiftStart' , 'shiftEnd', 'isShortLeave'
+            'nextAction', 'statusMessage', 'isLate', 'shiftStart', 'shiftEnd', 'isShortLeave'
         ));
     }
 

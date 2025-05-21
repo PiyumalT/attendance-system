@@ -54,11 +54,22 @@ class WorkScheduleController extends Controller
     // Show the form for editing the specified work schedule
     public function edit($id)
     {
-        $schedule = WorkSchedule::with('days')->findOrFail($id);
-        return view('work_schedules.edit', compact('schedule'));
+        $schedule = WorkSchedule::findOrFail($id);
+        if (!$schedule) {
+            return redirect()->route('work-schedules.index')->with('error', 'Work schedule not found.');
+        }
+
+        //get all days from work_schedule_days where work_schedule_id = $id
+        $days = $schedule->days()->get()->keyBy('day')->map(function ($day) {
+            return [
+                'start_time' => $day->start_time,
+                'end_time' => $day->end_time,
+            ];
+        });
+    
+        return view('work_schedules.edit', compact('schedule', 'days'));
     }
 
-    // Update the specified work schedule in storage
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -73,22 +84,27 @@ class WorkScheduleController extends Controller
             'name' => $request->name,
         ]);
 
-        // Delete existing schedule days
+        // Clear existing schedule days
         $schedule->days()->delete();
 
-        // Store updated schedule days
-        foreach ($request->days as $day => $times) {
+        // Save updated schedule days
+        foreach ($request->days as $dayName => $times) {
             if (!empty($times['start_time']) && !empty($times['end_time'])) {
+                $dayIndex = \Carbon\Carbon::parse($dayName)->dayOfWeek; // Optional fallback if needed
+
                 $schedule->days()->create([
-                    'day_of_week' => $day,
+                    'day' => $dayName, // Use day name directly like 'Monday'
                     'start_time' => $times['start_time'],
                     'end_time' => $times['end_time'],
                 ]);
             }
         }
 
-        return redirect()->route('work-schedules.index')->with('success', 'Work schedule updated successfully.');
+        return redirect()->route('work-schedules.index')
+            ->with('success', 'Work schedule updated successfully.');
     }
+
+
 
     // Remove the specified work schedule from storage
     public function destroy($id)

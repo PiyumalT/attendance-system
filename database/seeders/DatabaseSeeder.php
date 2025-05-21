@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use Database\Seeders\RolesAndPermissionsSeeder; // Correct import
 use Database\Seeders\SuperAdminSeeder; // Correct import
+use Database\Seeders\DefaultAttendanceScheduleSeeder; // Correct import
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class, 
             SuperAdminSeeder::class, 
+            DefaultAttendanceScheduleSeeder::class,
         ]);
     }
 }

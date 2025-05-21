@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use App\Models\WorkSchedule;
 
 class UserManagementController extends Controller
 {
@@ -36,6 +37,14 @@ class UserManagementController extends Controller
         ]);
 
         $user->assignRole($request->role);
+
+        //get first workschedule from the workshediules table
+        $defaultSchedule = WorkSchedule::first();
+        if ($defaultSchedule) {
+            $user->workSchedules()->attach($defaultSchedule->id);
+        } else {
+            return redirect()->back()->with('error', 'No default schedule found.');
+        }
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }

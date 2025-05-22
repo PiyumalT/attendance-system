@@ -7,14 +7,14 @@
         <div class="flex items-center justify-between mb-4">
             <form method="GET" class="flex items-center gap-2">
                 <input type="hidden" name="month" value="{{ $previousMonth }}">
-                <button type="submit" class="px-3 py-1 bg-gray-200 rounded">← Prev</button>
+                <button type="submit" class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 transition">← Prev</button>
             </form>
 
             <div class="text-lg font-semibold">{{ \Carbon\Carbon::parse($selectedMonth)->format('F Y') }}</div>
 
             <form method="GET" class="flex items-center gap-2">
                 <input type="hidden" name="month" value="{{ $nextMonth }}">
-                <button type="submit" class="px-3 py-1 bg-gray-200 rounded" {{ $disableNext ? 'disabled' : '' }}>Next →</button>
+                <button type="submit" class="px-3 py-1 rounded transition {{ $disableNext ? 'bg-gray-400 text-gray-200 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700' }}" {{ $disableNext ? 'disabled' : '' }}>Next →</button>
             </form>
         </div>
 

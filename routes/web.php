@@ -6,6 +6,7 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WorkScheduleController;
 use App\Http\Controllers\SalaryInfoController;
+use App\Http\Controllers\SalaryReportController;
 
 
 
@@ -102,6 +103,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/salary-info/{id}/edit', [SalaryInfoController::class, 'edit'])->name('salary-info.edit');
         Route::put('/salary-info/{id}', [SalaryInfoController::class, 'update'])->name('salary-info.update');
     });
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/salary-report', [SalaryReportController::class, 'index'])->name('salary-report.index');
+    // Route::get('/salary-report/generate', [SalaryReportController::class, 'generate'])->name('salary-report.generate');
 });
 
 

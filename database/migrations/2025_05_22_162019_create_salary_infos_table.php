@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('salary_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->decimal('salary_per_day', 10, 2);
+            $table->decimal('basic_salary', 10, 2);
             $table->decimal('ot_rate_per_hour', 10, 2);
             $table->decimal('late_deduction_per_hour', 10, 2);
             $table->timestamps();

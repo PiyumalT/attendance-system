@@ -26,7 +26,7 @@ class SalaryInfoController extends Controller
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'salary_per_day' => 'required|numeric',
+            'basic_salary' => 'required|numeric',
             'ot_rate_per_hour' => 'required|numeric',
             'late_deduction_per_hour' => 'required|numeric',
         ]);
@@ -45,7 +45,7 @@ class SalaryInfoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'salary_per_day' => 'required|numeric',
+            'basic_salary' => 'required|numeric',
             'ot_rate_per_hour' => 'required|numeric',
             'late_deduction_per_hour' => 'required|numeric',
         ]);

@@ -12,8 +12,8 @@
             </div>
 
             <div class="mb-4">
-                <label class="block">Salary Per Day</label>
-                <input type="number" name="salary_per_day" step="0.01" value="{{ $salaryInfo->salary_per_day }}" class="w-full border p-2 rounded" required>
+                <label class="block">Basic salary</label>
+                <input type="number" name="basic_salary" step="0.01" value="{{ $salaryInfo->basic_salary }}" class="w-full border p-2 rounded" required>
             </div>
 
             <div class="mb-4">

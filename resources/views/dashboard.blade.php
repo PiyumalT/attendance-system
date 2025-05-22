@@ -85,6 +85,14 @@
                         </svg>
                         <span class="font-semibold">Manage Salary Info</span>
                     </a>
+                    <a href="{{ route('salary-report.index') }}"
+                       class="bg-red-600 hover:bg-red-700 transition text-white p-6 rounded-lg shadow flex flex-col items-center justify-center mt-4">
+                        <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18v18H3V3zm3 6h12M9 9v6m6-6v6"></path>
+                        </svg>
+                        <span class="font-semibold">Salary Report</span>
+                    </a>
                 @endcan
 
             </div>

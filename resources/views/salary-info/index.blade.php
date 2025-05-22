@@ -14,7 +14,7 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="border px-4 py-2">User</th>
-                    <th class="border px-4 py-2">Salary/Day</th>
+                    <th class="border px-4 py-2">Basic</th>
                     <th class="border px-4 py-2">OT Rate/Hr</th>
                     <th class="border px-4 py-2">Late Deduction/Hr</th>
                     <th class="border px-4 py-2">Actions</th>
@@ -24,7 +24,7 @@
                 @foreach($salaryInfos as $info)
                     <tr>
                         <td class="border px-4 py-2">{{ $info->user->name }}</td>
-                        <td class="border px-4 py-2">Rs. {{ $info->salary_per_day }}</td>
+                        <td class="border px-4 py-2">Rs. {{ $info->basic_salary }}</td>
                         <td class="border px-4 py-2">Rs. {{ $info->ot_rate_per_hour }}</td>
                         <td class="border px-4 py-2">Rs. {{ $info->late_deduction_per_hour }}</td>
                         <td class="border px-4 py-2">

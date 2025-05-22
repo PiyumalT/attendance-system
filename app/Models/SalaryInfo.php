@@ -11,7 +11,7 @@ class SalaryInfo extends Model
 
     protected $fillable = [
         'user_id',
-        'salary_per_day',
+        'basic_salary',
         'ot_rate_per_hour',
         'late_deduction_per_hour',
     ];

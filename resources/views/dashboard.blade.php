@@ -95,6 +95,15 @@
                     </a>
                 @endcan
 
+                <a href="{{ route('salary.my-report') }}"
+                   class="bg-orange-600 hover:bg-orange-700 transition text-white p-6 rounded-lg shadow flex flex-col items-center justify-center">
+                    <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 0V4m0 12v4"></path>
+                    </svg>
+                    <span class="font-semibold">My Salary Report</span>
+                </a>
+
             </div>
 
         </div>

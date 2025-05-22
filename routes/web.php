@@ -102,13 +102,18 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/salary-info', [SalaryInfoController::class, 'store'])->name('salary-info.store');
         Route::get('/salary-info/{id}/edit', [SalaryInfoController::class, 'edit'])->name('salary-info.edit');
         Route::put('/salary-info/{id}', [SalaryInfoController::class, 'update'])->name('salary-info.update');
+        Route::get('/salary-report', [SalaryReportController::class, 'index'])->name('salary-report.index');      
     });
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/salary-report', [SalaryReportController::class, 'index'])->name('salary-report.index');
     // Route::get('/salary-report/generate', [SalaryReportController::class, 'generate'])->name('salary-report.generate');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/my-salary-report', [SalaryReportController::class, 'myReport'])->name('salary.my-report');
+});
+
 
 
 

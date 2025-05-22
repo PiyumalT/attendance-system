@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WorkScheduleController;
+use App\Http\Controllers\SalaryInfoController;
 
 
 
@@ -91,6 +92,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/work-schedules/assign', [WorkScheduleController::class, 'assign'])->name('work-schedules.assign');
     Route::post('/work-schedules/store-assignment', [WorkScheduleController::class, 'storeAssignment'])->name('work-schedules.store-assignment');
     
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::middleware(['can:manage_salary'])->group(function () {
+        Route::get('/salary-info', [SalaryInfoController::class, 'index'])->name('salary-info.index');
+        Route::get('/salary-info/create', [SalaryInfoController::class, 'create'])->name('salary-info.create');
+        Route::post('/salary-info', [SalaryInfoController::class, 'store'])->name('salary-info.store');
+        Route::get('/salary-info/{id}/edit', [SalaryInfoController::class, 'edit'])->name('salary-info.edit');
+        Route::put('/salary-info/{id}', [SalaryInfoController::class, 'update'])->name('salary-info.update');
+    });
 });
 
 

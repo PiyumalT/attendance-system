@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class);
     }
 
+    public function salaryInfo()
+    {
+        return $this->hasOne(SalaryInfo::class);
+    }
+
 
 
 }

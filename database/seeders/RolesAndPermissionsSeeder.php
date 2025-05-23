@@ -20,6 +20,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'view_work_schedule',
             'manage_work_schedule',
             'manage_salary',
+            'manage_leaves',
         ];
 
         // Add permissions if they don't already exist
@@ -39,11 +40,15 @@ class RolesAndPermissionsSeeder extends Seeder
         $manageUsers = Permission::firstOrCreate(['name' => 'manage_users']);
         $manageRoles = Permission::firstOrCreate(['name' => 'manage_roles']);
         $addNewUser = Permission::firstOrCreate(['name' => 'add_new_user']);
+        $viewWorkSchedule = Permission::firstOrCreate(['name' => 'view_work_schedule']);
+        $manageWorkSchedule = Permission::firstOrCreate(['name' => 'manage_work_schedule']);
+        $manageSalary = Permission::firstOrCreate(['name' => 'manage_salary']);
+        $manageLeaves = Permission::firstOrCreate(['name' => 'manage_leaves']);
 
         // Assign permissions to roles
         $superAdmin->givePermissionTo(Permission::all());
         // $superAdmin->givePermissionTo([$viewAttendance, $markAttendance, $manageUsers, $manageRoles]);
-        $hrm->givePermissionTo([$viewAttendance, $markAttendance, $addNewUser]);  // HRM can add users
+        $hrm->givePermissionTo([$viewAttendance, $markAttendance, $addNewUser, $viewWorkSchedule, $manageWorkSchedule, $manageSalary, $manageLeaves]);
         $supervisor->givePermissionTo([$viewAttendance]);
         $regularUser->givePermissionTo([$markAttendance]);
     }

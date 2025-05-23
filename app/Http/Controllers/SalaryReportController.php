@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\SalaryInfo;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Leave;
 
 class SalaryReportController extends Controller
 {
@@ -70,22 +71,50 @@ class SalaryReportController extends Controller
                         $totalOTMinutes += $ot;
                         $totalLateMinutes += $late;
                     } else {
-                        $calendarData[$day] = [
-                            'worked_hours' => 0,
-                            'ot_hours' => 0,
-                            'status' => 'Absent',
-                        ];
-                        $absentDays++;
+                        // Check for approved leave on this day
+                        $hasLeave = Leave::where('user_id', $user->id)
+                            ->where('status', 'approved')
+                            ->whereDate('start_date', '<=', $day)
+                            ->whereDate('end_date', '>=', $day)
+                            ->exists();
+                        if ($hasLeave) {
+                            $calendarData[$day] = [
+                                'worked_hours' => 0,
+                                'ot_hours' => 0,
+                                'status' => 'Leave',
+                            ];
+                        } else if ($date->isToday()) {
+                            $calendarData[$day] = [
+                                'worked_hours' => 0,
+                                'ot_hours' => 0,
+                                'status' => 'Today',
+                            ];
+                        } elseif ($date->isFuture()) {
+                            $calendarData[$day] = [
+                                'worked_hours' => 0,
+                                'ot_hours' => 0,
+                                'status' => 'Future',
+                            ];
+                        } else {
+                            $calendarData[$day] = [
+                                'worked_hours' => 0,
+                                'ot_hours' => 0,
+                                'status' => 'Absent',
+                            ];
+                            $absentDays++;
+                        }
                     }
                 }
             }
 
+            $epf_rate =0.08;
             $workedDays = $shouldWorkDays - $absentDays;
             $salaryForWorkedDays = ($shouldWorkDays > 0) ? ($basicSalary / $shouldWorkDays) * $workedDays : 0;
             $otPay = round($totalOTMinutes / 60, 2) * $otRate;
             $absentDeduction = ($shouldWorkDays > 0) ? ($basicSalary / $shouldWorkDays) * $absentDays : 0;
             $lateDeduction = round($totalLateMinutes / 60, 2) * $lateDeductionRate;
-            $totalPay = $basicSalary + $otPay - ($absentDeduction + $lateDeduction);
+            $epfDeduction = ($basicSalary + $otPay - ($absentDeduction + $lateDeduction)) * $epf_rate;
+            $totalPay = $basicSalary + $otPay - ($absentDeduction + $lateDeduction + $epfDeduction);
 
             $summary = [
                 'month' => Carbon::parse($selectedMonth)->format('F Y'),
@@ -98,6 +127,7 @@ class SalaryReportController extends Controller
                 'ot_pay' => round($otPay, 2),
                 'salary' => round($salaryForWorkedDays, 2),
                 'total_pay' => round($totalPay, 2),
+                'epf_deduction' => round($epfDeduction, 2),
             ];
         }
 
@@ -157,22 +187,38 @@ class SalaryReportController extends Controller
                     $totalOTMinutes += $ot;
                     $totalLateMinutes += $late;
                 } else {
-                    $calendarData[$day] = [
-                        'worked_hours' => 0,
-                        'ot_hours' => 0,
-                        'status' => 'Absent',
-                    ];
-                    $absentDays++;
+                    // Check for approved leave on this day
+                    $hasLeave = \App\Models\Leave::where('user_id', $user->id)
+                        ->where('status', 'approved')
+                        ->whereDate('start_date', '<=', $day)
+                        ->whereDate('end_date', '>=', $day)
+                        ->exists();
+                    if ($hasLeave) {
+                        $calendarData[$day] = [
+                            'worked_hours' => 0,
+                            'ot_hours' => 0,
+                            'status' => 'Leave',
+                        ];
+                    } else {
+                        $calendarData[$day] = [
+                            'worked_hours' => 0,
+                            'ot_hours' => 0,
+                            'status' => 'Absent',
+                        ];
+                        $absentDays++;
+                    }
                 }
             }
         }
 
+        $epf_rate =0.08;
         $workedDays = $shouldWorkDays - $absentDays;
         $salaryForWorkedDays = ($shouldWorkDays > 0) ? ($basicSalary / $shouldWorkDays) * $workedDays : 0;
         $otPay = round($totalOTMinutes / 60, 2) * $otRate;
         $absentDeduction = ($shouldWorkDays > 0) ? ($basicSalary / $shouldWorkDays) * $absentDays : 0;
         $lateDeduction = round($totalLateMinutes / 60, 2) * $lateDeductionRate;
-        $totalPay = $basicSalary + $otPay - ($absentDeduction + $lateDeduction);
+        $epfDeduction = ($basicSalary + $otPay - ($absentDeduction + $lateDeduction)) * $epf_rate;
+        $totalPay = $basicSalary + $otPay - ($absentDeduction + $lateDeduction + $epfDeduction);
 
         $summary = [
             'month' => Carbon::parse($selectedMonth)->format('F Y'),
@@ -185,6 +231,7 @@ class SalaryReportController extends Controller
             'ot_pay' => round($otPay, 2),
             'salary' => round($salaryForWorkedDays, 2),
             'total_pay' => round($totalPay, 2),
+            'epf_deduction' => round($epfDeduction, 2),
         ];
 
         $previousMonth = Carbon::parse($selectedMonth)->subMonth()->format('Y-m');

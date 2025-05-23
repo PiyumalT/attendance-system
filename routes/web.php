@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\WorkScheduleController;
 use App\Http\Controllers\SalaryInfoController;
 use App\Http\Controllers\SalaryReportController;
+use App\Http\Controllers\LeaveController;
 
 
 
@@ -112,6 +113,17 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/my-salary-report', [SalaryReportController::class, 'myReport'])->name('salary.my-report');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/leaves', [LeaveController::class, 'index'])->name('leaves.index');
+    Route::post('/leaves', [LeaveController::class, 'store'])->name('leaves.store');
+});
+
+Route::middleware(['auth', 'can:manage_leaves'])->group(function () {
+    Route::get('/leaves/manage', [LeaveController::class, 'manage'])->name('leaves.manage');
+    Route::patch('/leaves/{leave}/approve', [LeaveController::class, 'approve'])->name('leaves.approve');
+    Route::patch('/leaves/{leave}/reject', [LeaveController::class, 'reject'])->name('leaves.reject');
 });
 
 

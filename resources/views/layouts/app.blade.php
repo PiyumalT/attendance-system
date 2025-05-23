@@ -24,7 +24,32 @@
 
         <!-- Page Content -->
         <main>
+            <div x-data="{ show: true }" x-show="show"
+                x-init="setTimeout(() => show = false, 4000)"
+                x-transition
+                class="fixed top-4 right-4 z-50">
+
+                @if (session('success'))
+                    <div class="flex items-center justify-between bg-green-100 border border-green-400 text-green-800 px-5 py-5 rounded shadow-lg mb-4"
+                        role="alert">
+                        <span class="mr-4 my-3">{{ session('success') }}</span>
+                        <button @click="show = false" class="text-green-800 hover:text-green-600 font-bold text-lg">&times;</button>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="flex items-center justify-between bg-red-100 border border-red-400 text-red-800 px-4 py-3 rounded shadow-lg mb-4"
+                        role="alert">
+                        <span class="mr-4">{{ session('error') }}</span>
+                        <button @click="show = false" class="text-red-800 hover:text-red-600 font-bold text-lg">&times;</button>
+                    </div>
+                @endif
+            </div>
+
+
             {{ $slot }}
+            <script src="//unpkg.com/alpinejs" defer></script>
+
         </main>
     </div>
 </body>

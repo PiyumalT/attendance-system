@@ -11,13 +11,28 @@
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100">
-        @include('layouts.navigation')
+        {{-- @include('layouts.navigation') --}}
+
+        <x-navigation />
 
         <!-- Page Heading -->
         @if (isset($header))
             <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                    @if (!request()->routeIs('dashboard'))
+                        <a href="{{ url()->previous() }}" class="flex items-center text-gray-500 hover:text-indigo-600 transition font-semibold">
+                            <svg class="w-6 h-6 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                            Back
+                        </a>
+                    @else
+                        <div class="w-20"></div>
+                    @endif
+                    <div class="flex-1 text-center">
+                        <span class="text-2xl font-semibold text-gray-800">{{ $header }}</span>
+                    </div>
+                    <div class="w-20"></div> <!-- Spacer for symmetry -->
                 </div>
             </header>
         @endif

@@ -59,19 +59,30 @@
 
         <div class="bg-white p-6 rounded shadow">
             <h3 class="text-xl font-semibold mb-4">Salary Summary - {{ $summary['month'] }}</h3>
-            <ul class="space-y-2 text-gray-700">
-                <li><strong>Basic Salary:</strong> Rs. {{ number_format($summary['basic_salary'], 2) }}</li>
-                <li><strong>Total Worked Hours:</strong> {{ $summary['worked_hours'] }} hrs</li>
-                <li><strong>Overtime Hours:</strong> {{ $summary['ot_hours'] }} hrs</li>
-                <li><strong>Absent Days:</strong> {{ $summary['absent_days'] }}</li>
-                <li><strong>OT Pay:</strong> Rs. {{ number_format($summary['ot_pay'], 2) }}</li>
-                <li><strong>Absent Deduction:</strong> Rs. {{ number_format($summary['absent_deduction'], 2) }}</li>
-                <li><strong>Late Deduction:</strong> Rs. {{ number_format($summary['late_deduction'], 2) }}</li>
-                <li><strong>EPF Deduction:</strong> Rs. {{ number_format($summary['epf_deduction'], 2) }}</li>
-                <li><strong>Final Salary:</strong>
-                    <span class="text-green-700 font-bold">Rs. {{ number_format($summary['total_pay'], 2) }}</span>
-                </li>
-            </ul>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+                <div>
+                    <ul class="space-y-2">
+                        <li><strong class="inline-block w-40">Basic Salary:</strong> <span class="text-blue-700">Rs. {{ number_format($summary['basic_salary'], 2) }}</span></li>
+                        <li><strong class="inline-block w-40">Total Worked Hours:</strong> <span class="text-blue-700">{{ $summary['worked_hours'] }} hrs</span></li>
+                        <li><strong class="inline-block w-40">Overtime Hours:</strong> <span class="text-blue-700">{{ $summary['ot_hours'] }} hrs</span></li>
+                        <li><strong class="inline-block w-40">Absent Days:</strong> <span class="text-red-700">{{ $summary['absent_days'] }}</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <ul class="space-y-2">
+                        <li><strong class="inline-block w-40">OT Pay:</strong> <span class="text-green-700">+ Rs. {{ number_format($summary['ot_pay'], 2) }}</span></li>
+                        <li><strong class="inline-block w-40">Absent Deduction:</strong> <span class="text-red-700">- Rs. {{ number_format($summary['absent_deduction'], 2) }}</span></li>
+                        <li><strong class="inline-block w-40">Late Deduction:</strong> <span class="text-red-700">- Rs. {{ number_format($summary['late_deduction'], 2) }}</span></li>
+                        <li><strong class="inline-block w-40">EPF Deduction:</strong> <span class="text-red-700">- Rs. {{ number_format($summary['epf_deduction'], 2) }}</span></li>
+                    </ul>
+                </div>
+                <div class="col-span-1 md:col-span-2 mt-4">
+                    <hr class="border-t-2 border-gray-300 my-2">
+                    <strong>Final Salary:</strong>
+                    <span class="text-green-700 font-bold text-lg">Rs. {{ number_format($summary['total_pay'], 2) }}</span>
+                    <hr class="border-t-2 border-gray-300 my-2">
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>

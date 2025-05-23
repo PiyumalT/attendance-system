@@ -8,6 +8,7 @@ use App\Http\Controllers\WorkScheduleController;
 use App\Http\Controllers\SalaryInfoController;
 use App\Http\Controllers\SalaryReportController;
 use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\SalaryEmailController;
 
 
 
@@ -124,6 +125,11 @@ Route::middleware(['auth', 'can:manage_leaves'])->group(function () {
     Route::get('/leaves/manage', [LeaveController::class, 'manage'])->name('leaves.manage');
     Route::patch('/leaves/{leave}/approve', [LeaveController::class, 'approve'])->name('leaves.approve');
     Route::patch('/leaves/{leave}/reject', [LeaveController::class, 'reject'])->name('leaves.reject');
+});
+
+Route::middleware(['auth', 'can:manage_salary'])->group(function () {
+    Route::post('/salary/email/send-to-user', [SalaryEmailController::class, 'sendToUser'])->name('salary.email.user');
+    Route::post('/salary/email/send-to-all', [SalaryEmailController::class, 'sendToAll'])->name('salary.email.all');
 });
 
 

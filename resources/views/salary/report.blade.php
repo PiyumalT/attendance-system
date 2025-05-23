@@ -84,6 +84,18 @@
                 {{-- <div class="mt-6">
                     <a href="#" class="bg-green-600 text-white px-4 py-2 rounded">Download PDF</a>
                 </div> --}}
+
+                <div class="mt-6">
+                    <form method="POST" action="{{ route('salary.email.user') }}">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ $selectedUserId }}">
+                        <input type="hidden" name="month" value="{{ $selectedMonth }}">
+                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                            Send Paysheet Email
+                        </button>
+                    </form>
+                </div>
+
             </div>
         @endif
     </div>

@@ -33,6 +33,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $hrm = Role::firstOrCreate(['name' => 'hr-manager']);
         $supervisor = Role::firstOrCreate(['name' => 'supervisor']);
         $regularUser = Role::firstOrCreate(['name' => 'regular-user']);
+        $attendenceMaker = Role::firstOrCreate(['name' => 'attendance-maker']);
 
         // Get permissions
         $viewAttendance = Permission::firstOrCreate(['name' => 'view_attendance']);
@@ -45,11 +46,13 @@ class RolesAndPermissionsSeeder extends Seeder
         $manageSalary = Permission::firstOrCreate(['name' => 'manage_salary']);
         $manageLeaves = Permission::firstOrCreate(['name' => 'manage_leaves']);
 
+
         // Assign permissions to roles
         $superAdmin->givePermissionTo(Permission::all());
         // $superAdmin->givePermissionTo([$viewAttendance, $markAttendance, $manageUsers, $manageRoles]);
         $hrm->givePermissionTo([$viewAttendance, $markAttendance, $addNewUser, $viewWorkSchedule, $manageWorkSchedule, $manageSalary, $manageLeaves]);
         $supervisor->givePermissionTo([$viewAttendance]);
         $regularUser->givePermissionTo([$markAttendance]);
+        $attendenceMaker->givePermissionTo([$markAttendance]);
     }
 }

@@ -9,12 +9,14 @@ use App\Http\Controllers\SalaryInfoController;
 use App\Http\Controllers\SalaryReportController;
 use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\SalaryEmailController;
+use App\Http\Controllers\AttendanceAdminAuthController;
+use App\Http\Controllers\UserController;
+
 
 
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -131,6 +133,18 @@ Route::middleware(['auth', 'can:manage_salary'])->group(function () {
     Route::post('/salary/email/send-to-user', [SalaryEmailController::class, 'sendToUser'])->name('salary.email.user');
     Route::post('/salary/email/send-to-all', [SalaryEmailController::class, 'sendToAll'])->name('salary.email.all');
 });
+
+
+Route::middleware(['auth', 'can:manage_users'])->group(function () {
+    Route::get('/attendance-admins', [AttendanceAdminAuthController::class, 'index'])->name('attendance-admins.index');
+    Route::get('/attendance-admins/create', [AttendanceAdminAuthController::class, 'create'])->name('attendance-admins.create');
+    Route::post('/attendance-admins', [AttendanceAdminAuthController::class, 'store'])->name('attendance-admins.store');
+    Route::delete('/attendance-admins/{attendanceAdmin}', [AttendanceAdminAuthController::class, 'destroy'])->name('attendance-admins.destroy');
+});
+
+
+Route::get('/users/edit-pin', [UserController::class, 'editPin'])->name('users.edit-pin');
+Route::post('/users/update-pin', [UserController::class, 'updatePin'])->name('users.update-pin');
 
 
 

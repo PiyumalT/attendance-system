@@ -1,4 +1,5 @@
 <?php
+namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -22,6 +23,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
             'role' => ['required', 'exists:roles,name'],  // Ensure the role exists
+            'pin' => ['required', 'string'], 
         ]);
 
         // Create the user
@@ -29,6 +31,7 @@ class UserController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'pin' => $request->pin,
         ]);
 
         // Assign the selected role
@@ -36,4 +39,24 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User created successfully!');
     }
+
+    public function editPin()
+    {
+        $user = auth()->user(); // Get the currently authenticated user
+        return view('users.edit-pin', compact('user'));
+    }
+
+    public function updatePin(Request $request)
+    {
+        $request->validate([
+            'pin' => 'required|string|max:10',
+        ]);
+
+        $user = auth()->user();
+
+        $user->update(['pin' => $request->pin]);
+
+        return redirect()->route('users.index')->with('success', 'PIN updated.');
+    }
+
 }

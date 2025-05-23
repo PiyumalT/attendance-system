@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'attendance_admin_api' => [
+            'driver' => 'token',
+            'provider' => 'attendance_admins',
+        ],
     ],
 
     /*
@@ -63,6 +67,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+        'attendance_admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\AttendanceAdmin::class,
         ],
 
         // 'users' => [

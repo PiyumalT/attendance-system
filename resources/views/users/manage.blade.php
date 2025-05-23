@@ -45,6 +45,13 @@
                     </select>
                 </div>
 
+                <div class="mb-4">
+                    <label class="block mb-1 font-medium">Attendance PIN {{ isset($user) ? '(leave blank to keep current)' : '' }}</label>
+                    <input type="text" name="pin" class="w-full border rounded p-2" maxlength="10" value="{{ old('pin') }}">
+                    <small class="text-gray-500">Numeric, up to 10 characters</small>
+                </div>
+
+
                 <div class="text-right">
                     <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" type="submit">
                         {{ isset($user) ? 'Update' : 'Create' }}

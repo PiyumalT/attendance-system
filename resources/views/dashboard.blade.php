@@ -124,6 +124,15 @@
                     <span class="font-semibold">Manage Leave Requests</span>
                 </a>
                 @endcan
+                <a href="{{ route('users.edit-pin') }}"
+                    class="bg-indigo-600 hover:bg-indigo-700 transition text-white p-6 rounded-lg shadow flex flex-col items-center justify-center">
+                    <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 15v2m0-6v2m-6 4V7a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 01-2 2H8a2 2 0 01-2-2z"/>
+                    </svg>
+                    <span class="font-semibold">Edit Attendence Pin</span>
+                </a>
 
             </div>
 

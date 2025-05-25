@@ -175,37 +175,24 @@ class="flex min-h-screen bg-gray-100">
     </aside>
 
     <!-- Main Content Area -->
-    <div class="flex-1 flex flex-col" 
+    <div class="flex-1 flex flex-col"
          :class="{
              'md:ml-64': sidebarOpen,
              'md:ml-0': !sidebarOpen
          }">
-        <!-- Desktop Header with Profile Dropdown -->
-        <header class="hidden md:flex items-center justify-between bg-white border-b border-gray-200 h-16 px-6">
-            <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-md text-gray-600 hover:bg-gray-100">
-                <template x-if="!sidebarOpen">
-                    <i class="fas fa-bars"></i>
-                </template>
-            </button>
-            <div class="flex items-center space-x-4">
-                <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
-                        <span class="text-gray-700">{{ Auth::user()->name }}</span>
-                        <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
-                    </button>
-                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                        <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </header>
-
+        <!-- Desktop Sidebar Open Button (top-left, only on desktop, only when sidebar is closed) -->
+        <button
+            @click="sidebarOpen = true"
+            class="hidden md:block fixed top-4 left-4 z-30 p-2 rounded-full bg-white border border-gray-200 shadow text-gray-600 hover:bg-gray-100 transition"
+            x-show="!sidebarOpen && window.innerWidth > 768"
+            style="transition: left 0.3s;"
+        >
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
         <!-- Page Content -->
-        <main class="flex-1 overflow-y-auto pt-16 md:pt-0">
+        <main class="flex-1 overflow-y-auto pt-0">
             {{ $slot }}
         </main>
     </div>

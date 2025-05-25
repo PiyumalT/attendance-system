@@ -53,7 +53,12 @@
             @endif
         </div>
 
-        {{ $slot }}
+        <div class="min-h-[70vh] px-4 sm:px-6 lg:px-8 py-6 bg-gray-50">
+            {{ $slot }}
+        </div>
+        <footer class="w-full text-center py-4 text-gray-500 text-sm bg-white border-t border-gray-200 mt-8">
+            &copy; {{ date('Y') }} AttendancePro. All rights reserved.
+        </footer>
     </x-navigation>
     <script src="//unpkg.com/alpinejs" defer></script>
 </body>

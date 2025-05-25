@@ -22,6 +22,12 @@ class SuperAdminSeeder extends Seeder
 
             // Assign the 'super-admin' role to the user
             $superAdmin->assignRole('super-admin');
+
+            //assign 1st work schedule to super admin
+            $workSchedule = \App\Models\WorkSchedule::first();
+            if ($workSchedule) {
+                $superAdmin->workSchedules()->attach($workSchedule->id);
+            }
         }
     }
 }

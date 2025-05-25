@@ -16,6 +16,11 @@ class SalaryReportController extends Controller
         $selectedUserId = $request->user_id ?? null;
         $selectedMonth = $request->month ?? now()->format('Y-m');
 
+        //if no work schedule is set, send error and return salary-report.index with error message
+        if ($selectedUserId && !User::find($selectedUserId)->workSchedules()->exists()) {
+            return redirect()->route('salary-report.index')->withErrors(['error' => 'No work schedule set for this user.']);
+        }
+
         $calendarData = [];
         $summary = [];
 

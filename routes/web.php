@@ -29,7 +29,9 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/users/edit-pin', [UserController::class, 'editPin'])->name('users.edit-pin');
+    Route::post('/users/update-pin', [UserController::class, 'updatePin'])->name('users.update-pin');
 });
 
 Route::middleware(['auth', 'permission:add_new_user'])->group(function () {
@@ -143,8 +145,7 @@ Route::middleware(['auth', 'can:manage_users'])->group(function () {
 });
 
 
-Route::get('/users/edit-pin', [UserController::class, 'editPin'])->name('users.edit-pin');
-Route::post('/users/update-pin', [UserController::class, 'updatePin'])->name('users.update-pin');
+
 
 
 

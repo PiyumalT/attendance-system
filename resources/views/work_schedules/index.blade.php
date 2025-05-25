@@ -24,11 +24,11 @@
                             <td class="px-4 py-2 border">{{ $schedule->name }}</td>
                             <td class="px-4 py-2 border flex space-x-2">
                                 <a href="{{ route('work-schedules.edit', $schedule) }}" class="text-blue-600 hover:underline">Edit</a>
-                                <a href="{{ route('work-schedules.assign', $schedule) }}" class="text-green-600 hover:underline">Assign to Users</a>
+                                {{-- <a href="{{ route('work-schedules.assign', $schedule) }}" class="text-green-600 hover:underline">Assign to Users</a>
                                 <form method="POST" action="{{ route('work-schedules.destroy', $schedule) }}" onsubmit="return confirm('Delete this schedule?')">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:underline">Delete</button>
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                     @empty

@@ -56,7 +56,7 @@ class UserController extends Controller
 
         $user->update(['pin' => $request->pin]);
 
-        return redirect()->route('users.index')->with('success', 'PIN updated.');
+        return redirect()->route('dashboard')->with('success', 'PIN updated.');
     }
 
 }

@@ -108,7 +108,11 @@
                 </div>
 
             </div>
-            <style>
+        @else
+            <div class="bg-white p-6 rounded shadow text-center text-red-600">
+                <p>Please select a user with a valid work schedule and salary info.</p>
+                <a href="{{ route('salary-info.create') }}" class="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Add Salary Info</a>
+            </div>
         @endif
     </div>
 </x-app-layout>

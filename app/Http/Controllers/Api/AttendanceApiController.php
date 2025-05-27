@@ -25,7 +25,7 @@ class AttendanceApiController extends Controller
             $user = User::where('email', $request->email)->first();
         } else {
             $request->validate(['employee_id' => 'required|integer']);
-            $user = User::where('employee_id', $request->employee_id)->first();
+            $user = User::where('id', $request->employee_id)->first();
         }
         if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);

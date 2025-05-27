@@ -61,7 +61,7 @@
 <body>
     <div class="landing-container">
         <h1>Welcome to The Uniform Hub</h1>
-        <p>Efficient Payroll and Attendance System for Seamless Employee Management</p>
+        <p>Payroll and Attendance System for Seamless Employee Management</p>
         <a href="{{ route('login') }}" class="btn">Login</a>
     </div>
 </body>

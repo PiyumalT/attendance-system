@@ -26,11 +26,11 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        $user = Auth::user();
+        // $user = Auth::user();
 
-        if ($user->hasRole('regular-user') && $user->roles->count() === 1) {
-            return redirect()->route('attendance.create');
-        }
+        // if ($user->hasRole('regular-user') && $user->roles->count() === 1) {
+        //     return redirect()->route('attendance.create');
+        // }
 
         // Otherwise, redirect to the dashboard
         return redirect()->route('dashboard');

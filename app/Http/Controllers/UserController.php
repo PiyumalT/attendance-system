@@ -16,29 +16,29 @@ class UserController extends Controller
     }
 
     // Store the newly created user
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', 'min:8'],
-            'role' => ['required', 'exists:roles,name'],  // Ensure the role exists
-            'pin' => ['required', 'string'], 
-        ]);
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'name' => ['required', 'string', 'max:255'],
+    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+    //         'password' => ['required', 'confirmed', 'min:8'],
+    //         'role' => ['required', 'exists:roles,name'],  // Ensure the role exists
+    //         'pin' => ['required', 'string'], 
+    //     ]);
 
-        // Create the user
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'pin' => $request->pin,
-        ]);
+    //     // Create the user
+    //     $user = User::create([
+    //         'name' => $validated['name'],
+    //         'email' => $validated['email'],
+    //         'password' => Hash::make($validated['password']),
+    //         'pin' => $validated['pin'],
+    //     ]);
 
-        // Assign the selected role
-        $user->assignRole($validated['role']);
+    //     // Assign the selected role
+    //     $user->assignRole($validated['role']);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully!');
-    }
+    //     return redirect()->route('users.index')->with('success', 'User created successfully!');
+    // }
 
     public function editPin()
     {

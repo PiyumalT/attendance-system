@@ -27,7 +27,7 @@
                     </a>
                 @endcan
 
-                @can('mark_attendance')
+                {{-- @can('mark_attendance')
                     <a href="{{ route('attendance.create') }}"
                        class="bg-green-600 hover:bg-green-700 transition text-white p-6 rounded-lg shadow flex flex-col items-center justify-center">
                         <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" stroke-width="2"
@@ -37,7 +37,7 @@
                         </svg>
                         <span class="font-semibold">Mark Attendance</span>
                     </a>
-                @endcan
+                @endcan --}}
 
                 @canany(['view_attendance', 'mark_attendance'])
                     <a href="{{ route('attendance.view') }}"

@@ -4,11 +4,15 @@
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-4 flex justify-end">
-            <a href="{{ route('users.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+        <div class="mb-4 flex flex-col sm:flex-row justify-end gap-2">
+            <a href="{{ route('users.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition flex items-center">
                 <!-- add user fa fa icon -->
                 <i class="fas fa-user-plus mr-2"></i>
                 Create New User
+            </a>
+            <a href="/attendance-admins" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition flex items-center">
+                <i class="fas fa-user-shield mr-2"></i>
+                Create Attendance Authorizer
             </a>
         </div>
 

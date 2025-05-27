@@ -27,13 +27,15 @@ class UserManagementController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|confirmed|min:6',
-            'role' => 'required|exists:roles,name'
+            'role' => 'required|exists:roles,name',
+            'pin' => 'nullable|string|max:10',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'pin' => $request->pin ? $request->pin : null,
         ]);
 
         $user->assignRole($request->role);
@@ -61,13 +63,15 @@ class UserManagementController extends Controller
             'name' => 'required|string',
             'email' => "required|email|unique:users,email,{$user->id}",
             'password' => 'nullable|string|confirmed|min:6',
-            'role' => 'required|exists:roles,name'
+            'role' => 'required|exists:roles,name',
+            'pin' => 'nullable|string|max:10',
         ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password ? bcrypt($request->password) : $user->password,
+            'pin' => $request->pin? $request->pin : $user->pin,
         ]);
 
         $user->syncRoles([$request->role]);

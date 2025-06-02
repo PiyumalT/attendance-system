@@ -37,10 +37,12 @@
                     <label class="block mb-1 font-medium">Role</label>
                     <select name="role" required class="w-full border rounded p-2">
                         @foreach ($roles as $role)
-                            <option value="{{ $role->name }}"
-                                {{ (isset($user) && $user->roles->pluck('name')->first() === $role->name) ? 'selected' : '' }}>
-                                {{ $role->name }}
-                            </option>
+                            @if ($role->name !== 'attendance-maker')
+                                <option value="{{ $role->name }}"
+                                    {{ (isset($user) && $user->roles->pluck('name')->first() === $role->name) ? 'selected' : '' }}>
+                                    {{ $role->name }}
+                                </option>
+                            @endif
                         @endforeach
                     </select>
                 </div>

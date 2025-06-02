@@ -51,7 +51,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $superAdmin->givePermissionTo(Permission::all());
         // $superAdmin->givePermissionTo([$viewAttendance, $markAttendance, $manageUsers, $manageRoles]);
         $hrm->givePermissionTo([$viewAttendance, $markAttendance, $addNewUser, $viewWorkSchedule, $manageWorkSchedule, $manageSalary, $manageLeaves]);
-        $supervisor->givePermissionTo([$viewAttendance]);
+        // $supervisor->givePermissionTo([$viewAttendance]);
         $regularUser->givePermissionTo([$markAttendance]);
         $attendenceMaker->givePermissionTo([$markAttendance]);
     }

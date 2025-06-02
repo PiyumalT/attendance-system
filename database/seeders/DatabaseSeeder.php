@@ -16,9 +16,9 @@ class DatabaseSeeder extends Seeder
     {
         // Call the seeders to populate the database
         $this->call([
+            DefaultAttendanceScheduleSeeder::class,
             RolesAndPermissionsSeeder::class, 
             SuperAdminSeeder::class, 
-            DefaultAttendanceScheduleSeeder::class,
         ]);
     }
 }
